@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Hate Speech Detection</title>
+
+  <link rel="stylesheet" type="text/css" href="./static/css/main.css">
+</head>
+<body>
+  <header>
+    <a href="/"><div class="brand"><i>python</i>NLP</div></a>
+  </header>
+
+  <main>
+
+    <div class="left">
+      <div class="display-text">
+        Indonesian Hate Speech & Abusive Words Detection
+      </div>
+      <div class="text">
+        Hate Speech Detection is a web-based application that can detetct <strong>Hate Speech</strong> or <strong>Abusive Words</strong> in Indonesian text documents.
+      </div>
+
+      <form method="post">
+        <textarea name="text" rows="6" placeholder="Insert your text here..."></textarea>
+        <button type="submit" onclick="this.style.display='none'; document.querySelector('.load-2').style.display = 'block';">Process</button>
+        <button class="load"></button>
+        <button class="load-2">
+          <span style="--i: 0;"></span>
+          <span style="--i: 1;"></span>
+          <span style="--i: 2;"></span>
+        </button>
+      </form>
+    </div>
+
+
+    <div class="right">
+      <div class="result">
+        <div class="title">Result</div>
+        <div class="body">
+          <p>
+            {% if text %}
+              <div class="hs-wraper">
+              {% if HS == "0" %}
+                <div class="hs safe">Not a Hate Speech</div>
+              {% else %}
+                <div class="hs not-safe">Hate Speech</div>
+              {% endif %}
+              </div>
+
+              <div class="line"></div>
+            {% for word in text %}
+
+              {% if word in abusive %}
+
+              {% if abusive_dict[word] == "other" %}
+                <span class="abusive cat-1">{{word}}</span>
+              {% elif abusive_dict[word] == "gender/sexual orientation" %}
+                <span class="abusive cat-2">{{word}}</span>
+              {% elif abusive_dict[word] == "physical/disability" %}
+                <span class="abusive cat-3">{{word}}</span>
+              {% elif abusive_dict[word] == "religion/creed" %}
+                <span class="abusive cat-4">{{word}}</span>
+              {% else %}
+                <span class="abusive">{{word}}</span>
+              {% endif %}
+
+              {% else %}
+                {{word}}
+              {% endif %}
+
+            {% endfor %}
+
+            {% endif %}
+          </p>
+
+
+
+          {% if abusive %}
+          <div class="line"></div>
+          <h4>Abusive Words</h4>
+            {% for word in abusive %}
+
+              {% if abusive_dict[word] == "other" %}
+                <div class="card cat-1">
+                  <p>{{word}}</p>
+                  <strong>Category: {{abusive_dict[word]}}</strong>
+                </div>
+              {% elif abusive_dict[word] == "gender/sexual orientation" %}
+                <div class="card cat-2">
+                  <p>{{word}}</p>
+                  <strong>Category: {{abusive_dict[word]}}</strong>
+                </div>
+              {% elif abusive_dict[word] == "physical/disability" %}
+                <div class="card cat-3">
+                  <p>{{word}}</p>
+                  <strong>Category: {{abusive_dict[word]}}</strong>
+                </div>
+              {% elif abusive_dict[word] == "religion/creed" %}
+                <div class="card cat-4">
+                  <p>{{word}}</p>
+                  <strong>Category: {{abusive_dict[word]}}</strong>
+                </div>
+              {% else %}
+                <div class="card">
+                  <p>{{word}}</p>
+                  <strong>Category: {{abusive_dict[word]}}</strong>
+                </div>
+              {% endif %}
+
+            {% endfor %}
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
